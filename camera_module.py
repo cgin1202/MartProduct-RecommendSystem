@@ -10,7 +10,7 @@ client_id = "TdzD8AzvhVvaVq_7VHLi"
 client_secret = "057fWaEVPl"
 url =  "https://openapi.naver.com/v1/vision/face" # 얼굴감지
 def CFR(cam_num):
-    face = open(str(cam_num)+'.jpg','rb')
+    face = open('images/'+str(cam_num)+'.jpg','rb')
     files = {'image': face}
     headers = {'X-Naver-Client-Id': client_id, 'X-Naver-Client-Secret': client_secret }
     response = requests.post(url,  files=files, headers=headers)
@@ -31,8 +31,8 @@ def show_webcam():
         if(ret0):
             cv2.namedWindow('0',cv2.WINDOW_NORMAL)
             cv2.imshow('0', frame0)
-            cv2.imwrite('0.jpg', frame0)
-            CFR(0)
+            cv2.imwrite('images/0.jpg', frame0)
+#            CFR(0)
 #        if(ret1):
 #            cv2.namedWindow('1',cv2.WINDOW_NORMAL)
 #            cv2.imshow('1', frame1)
