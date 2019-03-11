@@ -24,26 +24,21 @@ def CFR(cam_num):
 
 def show_webcam():
     video_capture_0 = cv2.VideoCapture(0)
-    video_capture_1 = cv2.VideoCapture(1)
+#    video_capture_1 = cv2.VideoCapture(1)
     while True:
         ret0, frame0 = video_capture_0.read()
-        ret1, frame1 = video_capture_1.read()
+#        ret1, frame1 = video_capture_1.read()
         if(ret0):
             cv2.namedWindow('0',cv2.WINDOW_NORMAL)
             cv2.imshow('0', frame0)
             cv2.imwrite('0.jpg', frame0)
             CFR(0)
-        if(ret1):
-            cv2.namedWindow('1',cv2.WINDOW_NORMAL)
-            cv2.imshow('1', frame1)
-            cv2.imwrite('1.jpg', frame1)
-            CFR(1)
+#        if(ret1):
+#            cv2.namedWindow('1',cv2.WINDOW_NORMAL)
+#            cv2.imshow('1', frame1)
+#            cv2.imwrite('1.jpg', frame1)
+#            CFR(1)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     cv2.destroyAllWindows()
-
-def main():
-    show_webcam()
-if __name__ == '__main__':
-    main()
