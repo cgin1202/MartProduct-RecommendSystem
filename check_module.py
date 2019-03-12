@@ -24,7 +24,7 @@ def check():
                 conn.commit()
                 print("check")
             else:
-                print('not check')
+                print('not checked')
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     cv2.destroyAllWindows()

@@ -17,8 +17,9 @@ def check_in():
                 conn = dbconnection()
                 curs = conn.cursor()
                 if (cfr(0)["faces"] != []):
-                    sql = "SELECT * FROM client"
-                    curs.execute(sql)
+                    sql = "SELECT * FROM client WHERE id = %s"
+                    val = ("1111")
+                    curs.execute(sql, val)
                     rows = curs.fetchall()
                     print(rows)
                     if rows == ():
@@ -28,7 +29,7 @@ def check_in():
                         conn.commit()
                         print("enter")
                     else:
-                        print("you can't not enter")
+                        print("already entered")
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break

@@ -17,8 +17,10 @@ def check_out():
                 conn = dbconnection()
                 curs = conn.cursor()
                 if (cfr(0)["faces"] != []):
-                    sql = "SELECT * FROM client"
-                    curs.execute(sql)
+                    sql = "SELECT * FROM client WHERE id = %s"
+                    val = ("1111")
+                    curs.execute(sql, val)
+                    conn.commit()
                     rows = curs.fetchall()
                     print(rows)
                     if rows != ():
@@ -27,11 +29,11 @@ def check_out():
                             val = ("0", "1111")
                             curs.execute(sql, val)
                             conn.commit()
-                            print("change")
+                            print("exit")
                         else:
-                            print("you are not welcome")
+                            print("alreay exit")
                     else:
-                        print("no person")
+                        print("not checked client ")
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
