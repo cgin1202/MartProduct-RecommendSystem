@@ -16,7 +16,7 @@ def check_out():
                 cv2.imwrite('images/0.jpg', frame0)
                 conn = dbconnection()
                 curs = conn.cursor()
-                if (cfr(0)["faces"] != []):
+                if (cfr('images/0.jpg')["faces"] != []):
                     sql = "SELECT * FROM client WHERE id = %s"
                     val = ("1111")
                     curs.execute(sql, val)

@@ -15,7 +15,7 @@ def check():
             cv2.imshow('0', frame0)
             cv2.imwrite('images/0.jpg', frame0)
 
-            if(cfr(0)['faces']!=[]):
+            if(cfr('images/0.jpg')['faces']!=[]):
                 conn = dbconnection()
                 curs = conn.cursor()
                 sql = "INSERT INTO datas (client_id) VALUES (%s)"
