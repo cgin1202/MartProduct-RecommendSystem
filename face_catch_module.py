@@ -34,7 +34,6 @@ def face_catch(camera_no):
                     print(ages)
                     age = (int(ages[0]) + int(ages[1]))/2
                     print(age)
-                    age = res['faces'][0]['age']['value']
                     print('image detection complete!')
                     print(res['faces'][0]['gender']['confidence'])
                     cv2.imwrite('faces/'+name+'.jpg', frame0)

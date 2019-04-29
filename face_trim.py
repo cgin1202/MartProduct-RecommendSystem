@@ -1,6 +1,7 @@
 import cv2
 import face_recognition
 import os
+import sys
 
 def get_face_location(img_path):
     image = face_recognition.load_image_file(img_path)
@@ -25,5 +26,8 @@ def face_trim(img_path):
         print("No faces")
         return
 
-#img_path = './faces/6.jpeg'
-#trim_image = face_trim(img_path)
+if len(sys.argv) is 1:
+    print("no image...");
+img_path = './images/'
+img_path += sys.argv[1]
+trim_image = face_trim(img_path)
