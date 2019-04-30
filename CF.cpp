@@ -107,10 +107,10 @@ void get_result(int reco_user) {
   sort(ratings.begin(), ratings.end(), greater<pair<double, int> >());
   count = 0;
   for (it1 = ratings.begin(); it1 != ratings.end(); it1++) {
-    if (count == num_item_rec_topk) {
+/*    if (count == num_item_rec_topk) {
       break;
-    }
-    cout << it1->second << " ";
+    }*/
+    cout << it1->first << " " <<it1->second << " ";
     count++;
   }
   cout << endl;
