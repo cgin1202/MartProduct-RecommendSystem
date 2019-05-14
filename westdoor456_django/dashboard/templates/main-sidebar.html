@@ -1,0 +1,64 @@
+{% load static %}
+<!-- 왼쪽 메뉴 -->
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <!-- 사용자 프로필 보여주기 -->
+        <div class="user-panel">
+        <div class="pull-left image">
+            <img src="{% static 'dashboard/dist/img/manager.jpeg' %}" class="img-circle" alt="User Image">
+        </div>
+        <div class="pull-left info">
+            <p></p>
+            <a href="#"><i class="fa fa-circle text-success"></i> Manager</a>
+        </div>
+        </div>
+        <!-- 메뉴 -->
+        <ul class="sidebar-menu" data-widget="tree">
+        <li class="header">MAIN NAVIGATION</li>
+        <li>
+            <a href="{% url 'index' %}">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="treeview">
+            <a href="#">
+            <i class="fa fa-camera"></i> <span>Camera</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+            {% for camera in cameras %}
+            <li><a href="{% url 'camera' camera.camera_no %}"><i class="fa fa-circle-o"></i>{{ camera.camera_name }}</a></li>
+            {% endfor %}
+            </ul>
+        </li>
+        <li>
+            <a href="billboard.html">
+            <i class="fa fa-television"></i> <span>Billboard</span>
+            </a>
+        </li>
+        <li class="treeview">
+            <a href="#">
+            <i class="fa fa-user-o"></i> <span>Customer</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+            </span>
+            </a>
+            <ul class="treeview-menu">
+            {% for customer in customers %}
+                {% if customer.customer_no is not -1 %}
+                <li><a href="AllCustomer.html"><i class="fa fa-circle-o"></i>{{ customer.customer_name }}</a></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </li>
+        <li>
+            <a href="ranking.html">
+            <i class="fa fa-diamond"></i> <span>Ranking</span>
+            </a>
+        </li>
+        </ul>
+    </section>
+    <!-- /.왼쪽 사이드바 -->
+</aside>

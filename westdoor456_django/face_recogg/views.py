@@ -10,7 +10,10 @@ from dashboard.models import Camera
 def gen(fr):
     mydb = pymongodb.dbconnection()
     
-    fr.product_no = Camera.objects.get(camera_no=fr.camera_no).product_no
+    if(Camera.objects.get(camera_no=fr.camera_no).product):
+        fr.product_no = Camera.objects.get(camera_no=fr.camera_no).product.product_no
+    else:
+        fr.product_no = -1
     mycol = mydb["dashboard_customer"]
     camera_log = mydb["camera_log"]
     nowtime = time.time()
@@ -20,7 +23,7 @@ def gen(fr):
         if time.time() - nowtime >= 1:
             nowtime = time.time()
             if fr.now_no != -2:
-                CameraLog.objects.create(camera_no_id=int(fr.camera_no),customer_no_id=int(fr.now_no))
+                CameraLog.objects.create(camera_id=int(fr.camera_no),customer_id=int(fr.now_no))
         
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + jpg_bytes + b'\r\n\r\n')

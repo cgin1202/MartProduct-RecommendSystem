@@ -76,13 +76,13 @@ class FaceRecog():
 
         #디비 연동
         for id in self.face_names:
-            
             if id=="Unknown":
                 continue
             self.now_no = int(id)
             if time.time() - self.nowtime >=1:
                 self.nowtime = time.time()
-                mycol.update({'customer_no':int(id)}, {'$inc':{'customer_ratings.rating%d'%self.product_no:1}})
+                if self.product_no != -1:
+                    mycol.update({'customer_no':int(id)}, {'$inc':{'customer_ratings.rating%d'%self.product_no:1}})
 
 
         for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):

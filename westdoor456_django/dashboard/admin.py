@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(Camera)
 admin.site.register(Customer)
 admin.site.register(CameraLog)
+admin.site.register(Product)

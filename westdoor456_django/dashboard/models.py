@@ -1,10 +1,21 @@
 #from django.db import models
 from djongo import models
 #from django import forms
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+
+class Product(models.Model):
+    product_no = models.IntegerField(primary_key=True)
+    product_class = models.CharField(max_length=100, null=True, blank=True)
+    product_name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return str(self.product_no)
 
 class Camera(models.Model):
     camera_no = models.IntegerField(primary_key=True)
-    product_no = models.IntegerField(blank=True, null=True)
+    camera_name = models.CharField(max_length=100, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete = models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return str(self.camera_no)
@@ -42,7 +53,7 @@ class Customer(models.Model):
     customer_no = models.IntegerField(primary_key=True)
     customer_name = models.CharField(max_length=100)
     customer_gender = models.CharField(max_length=10, choices=(('Male','Male'),('Female','Female')), null=True, blank=True)
-    customer_age = models.IntegerField(range(1,100), null=True, blank=True)
+    customer_age = models.IntegerField(validators=[MaxValueValidator(100), MinValueValidator(1)], null=True, blank=True)
     customer_market_in = models.BooleanField(default=False)
     customer_ratings = models.EmbeddedModelField(
         model_container=ratings
@@ -52,6 +63,6 @@ class Customer(models.Model):
         return str(self.customer_no)
 
 class CameraLog(models.Model):
-    camera_no = models.ForeignKey(Camera, on_delete = models.CASCADE)
-    customer_no = models.ForeignKey(Customer, on_delete = models.CASCADE)
+    camera = models.ForeignKey(Camera, on_delete = models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete = models.CASCADE)
     datetime_now = models.DateTimeField(auto_now = True)

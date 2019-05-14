@@ -1,31 +1,219 @@
 {% load static %}
 <!DOCTYPE html>
+
 <html>
-    <head>
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-        <h1>Video Streaming Demonstration</h1>
-        <img id="bg" src="http://localhost:8000/face_recogg/cam/{{ no }}">
-        <script>
-            setInterval(function(){
-                $.ajax({
-                    url:'{% url 'searchCameraLog' %}',
-                    dataType:'json',
-                    type:'POST',
-                    data:{'msg':"pushed"},
-                    success:function(result){
-                        document.querySelector('article').innerHTML = JSON.stringify(result);
-                    }
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Westdoor456 | Dashboard</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/font-awesome/css/font-awesome.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/Ionicons/css/ionicons.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dashboard/dist/css/AdminLTE.min.css' %}">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="{% static 'dashboard/dist/css/skins/_all-skins.min.css' %}">
+  <!-- Morris chart -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/morris.js/morris.css' %}">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/jvectormap/jquery-jvectormap.css' %}">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="{% static 'dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css' %}">
+  <script src="{% static 'dashboard/bower_components/d3/d3.min.js' %}"></script>
+  <script src="{% static 'dashboard/bower_components/d3/d3-legend.min.js' %}"></script>
+  
+  <!-- Google Font -->
+  <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic'> 
+</head>
 
-                });
-            },1000)
-        </script>
 
-        <article></article>
+<body class="hold-transition skin-black sidebar-mini">
+  <div class="wrapper">
+    {% include 'header.html' %}
+    {% include 'main-sidebar.html' %}
+    <!-- 본문 -->
+    <div class="content-wrapper">
+      <!-- Dashboard 헤더 -->
+      <section class="content-header">
+        <h1>
+          Dashboard
+          <small>Control panel</small>
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+          <li class="active">Dashboard</li>
+        </ol>
+      </section>
 
-    </body>
 
+      <!-- 본문 내용 -->
+      <section class="content">
+        <div class="row">
+          <!-- 카메라 별 박스 -->
+          <section class="col-md-7">
+            <div class="box box-warning">
+              <div class="box-header with-border">
+                <h3 class="box-title">Camera</h3>
+              </div> <!-- /.box-header -->
+              <div class="box-body table-responsive">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Camera Number</th>
+                      <th>Position</th>
+                      <th>People</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for camera in cameras %}
+                    <tr>
+                        <td>{{ camera.camera_no }}</td>
+                        <td>{{ camera.camera_name }}</td>
+                        <td>{{ camera.product_no }}</td>
+                      </tr>
+                    {% endfor %}
+                    
+                  </tbody>
+                </table>
+              </div> <!-- /.box-body -->
+            </div> <!-- /.box -->
+          </section> <!-- /. 카메라 별 박스 -->
+
+          <!-- 품목 박스 -->
+          <section class="col-md-5">
+            <div class="box box-danger">
+              <div class="box-header with-border">
+                <h3 class="box-title">Product Stock</h3>
+              </div> <!-- /.box-header -->
+              <div class="box-body">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                    <tr>
+                      <th>Product ID</th>
+                      <th>Name</th>
+                      <th>Class</th>
+                    </tr>
+                  </thead>
+                    
+                  <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.product_no }}</td>
+                        <td>{{ product.product_class }}</td>
+                        <td>{{ product.product_name }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div> <!-- /.box-body -->
+            </div> <!-- /.box -->
+          </section> <!-- /.품목 박스 -->
+        </div>
+
+        <!-- 고객 명단 -->
+        <div class="row">
+          <section class="col-lg-12 connectedSortable">
+            <div class="box box-info">
+              <div class="box-header with-border">
+                <h3 class="box-title">Customers</h3>
+              </div>
+              <div class="box-body">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Mart</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for customer in customers %}
+                  <tr></tr>
+                    {% if customer.customer_no is -1 %}
+                      <!-- continue -->
+                    {% else %}
+                    <td>{{ customer.customer_no }}</td>
+                    <td>{{ customer.customer_name }}</td>
+                    <td>{{ customer.customer_gender }}</td>
+                    <td>{{ customer.customer_age }}</td>
+                    <td>{{ customer.customer_market_in }}</td>
+                    {% endif %}
+                  </tr>
+                  {% endfor %}
+                  
+                  </tbody>
+                </table>
+              </div> <!-- /.box-body -->
+            </div> <!-- /. box -->
+          </section>
+        </div> <!-- /. 고객 명단 row -->
+
+        <!-- 버블 chart  -->
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box box-default">
+              <div class="box-header">
+                <h3 class="box-title">Crawling</h3>
+              </div>
+              <div class="box-body">
+                <svg width="100%" height="500" font-family="sans-serif" font-size="10" text-anchor="middle"></svg>
+              </div> <!-- /.box-body -->
+            </div> <!-- /.box -->
+          </div> <!-- /.col -->
+        </div> <!-- /.row 버블 차트 -->
+      </section> <!-- /.content -->
+    </div> <!-- /.Dash Board  -->
+    {% include 'footer.html' %}
+  </div>
+<!-- ./wrapper -->
+
+<script src="{% static 'dashboard/dist/js/d3crawling.js' %}"></script>
+<!-- jQuery 3 -->
+<script src="{% static 'dashboard/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{% static 'dashboard/bower_components/jquery-ui/jquery-ui.min.js' %}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'dashboard/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
+<!-- Sparkline -->
+<script src="{% static 'dashboard/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js' %}"></script>
+<!-- jvectormap -->
+<script src="{% static 'dashboard/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
+<script src="{% static 'dashboard/plugins/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
+<!-- jQuery Knob Chart -->
+<script src="{% static 'dashboard/bower_components/jquery-knob/dist/jquery.knob.min.js' %}"></script>
+<!-- DataTables -->
+<script src="{% static 'dashboard/bower_components/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'dashboard/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+<!-- Bootstrap WYSIHTML5 -->
+<script src="{% static 'dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js' %}"></script>
+<!-- Slimscroll -->
+<script src="{% static 'dashboard/bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+<!-- FastClick -->
+<script src="{% static 'dashboard/bower_components/fastclick/lib/fastclick.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dashboard/dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<!--<script src="dist/js/pages/dashboard.js"></script> -->
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dashboard/dist/js/main.js' %}"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</body>
 </html>
+
