@@ -17,7 +17,7 @@
                     type:'POST',
                     data:{'msg':"pushed"},
                     success:function(result){
-                        document.querySelector('article').innerHTML = JSON.stringify(result['camera_log']);
+                        document.querySelector('article').innerHTML = JSON.stringify(result);
                     }
 
                 });

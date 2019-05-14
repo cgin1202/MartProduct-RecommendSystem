@@ -3,6 +3,7 @@ import cv2
 import os
 from . import camera
 import numpy as np
+import time
 
 #from pydb import dbconnection
 
@@ -15,6 +16,7 @@ class FaceRecog():
         self.camera_no = camera_no
         self.product_no = camera_no
         self.now_no = "Unknown"
+        self.nowtime = time.time()
 
         self.known_face_encodings = []
         self.known_face_names = []
@@ -43,6 +45,7 @@ class FaceRecog():
         frame = self.camera.get_frame()
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         rgb_small_frame = small_frame[:, :, ::-1]
+        self.now_no = -2
 
         if self.process_this_frame:
             # Find all the faces and face encodings in the current frame of video
@@ -53,7 +56,8 @@ class FaceRecog():
             for face_encoding in self.face_encodings:
 
                 name = "Unknown"
-                
+                self.now_no = -1
+
                 matches = face_recognition.compare_faces(self.known_face_encodings, face_encoding, 0.4)
                 if True in matches:
                     first_match_index = matches.index(True)
@@ -72,10 +76,13 @@ class FaceRecog():
 
         #디비 연동
         for id in self.face_names:
-            self.now_no = id
+            
             if id=="Unknown":
                 continue
-            mycol.update({'no':int(id)}, {'$inc':{'ratings.%d'%self.product_no:0.1}})
+            self.now_no = int(id)
+            if time.time() - self.nowtime >=1:
+                self.nowtime = time.time()
+                mycol.update({'customer_no':int(id)}, {'$inc':{'customer_ratings.rating%d'%self.product_no:1}})
 
 
         for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):

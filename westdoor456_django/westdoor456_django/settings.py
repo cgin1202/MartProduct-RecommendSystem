@@ -77,8 +77,15 @@ WSGI_APPLICATION = 'westdoor456_django.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'djongo',
+        'NAME': 'westdoor456',
+        'USER': 'tjans456',
+        'PASSWORD': 'westdoor456',
+        'HOST': '54.180.81.132',
+        'PORT':27017,
+        'AUTH_SOURCE': 'westdoor456',
+        'AUTH_MECHANISM': 'SCRAM-SHA-1',
+
     }
 }
 
