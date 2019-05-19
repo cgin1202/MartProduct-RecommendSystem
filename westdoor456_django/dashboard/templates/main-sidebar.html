@@ -28,9 +28,9 @@
             </span>
             </a>
             <ul class="treeview-menu">
-            {% for camera in cameras %}
-            <li><a href="{% url 'camera' camera.camera_no %}"><i class="fa fa-circle-o"></i>{{ camera.camera_name }}</a></li>
-            {% endfor %}
+                {% for camera in cameras %}
+                <li><a href="{% url 'camera' camera.camera_no %}"><i class="fa fa-circle-o"></i>{{ camera.camera_name }}</a></li>
+                {% endfor %}
             </ul>
         </li>
         <li>
@@ -46,11 +46,12 @@
             </span>
             </a>
             <ul class="treeview-menu">
-            {% for customer in customers %}
+                <li><a href="{% url 'customer' %}"><i class="fa fa-circle-o"></i>All Customer</a></li>
+                {% for customer in customers %}
                 {% if customer.customer_no is not -1 %}
-                <li><a href="AllCustomer.html"><i class="fa fa-circle-o"></i>{{ customer.customer_name }}</a></li>
+                <li><a href="{% url 'customer_one' customer.customer_no %}"><i class="fa fa-circle-o"></i>{{ customer.customer_name }}</a></li>
                 {% endif %}
-            {% endfor %}
+                {% endfor %}
             </ul>
         </li>
         <li>

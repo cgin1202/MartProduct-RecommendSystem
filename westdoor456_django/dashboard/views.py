@@ -31,6 +31,24 @@ def camera(request, no):
     }
     return HttpResponse(template.render(context, request))
 
+def customer(request):
+    template = loader.get_template('AllCustomer.html')
+    context = {
+        'customers' : Customer.objects.all(),
+    }
+    return HttpResponse(template.render(context, request))
+
+def customer_one(request, no):
+    template = loader.get_template('Customer.html')
+    context = {
+        'cameras' : Camera.objects.all(),
+        'customers' : Customer.objects.all(),
+        'products' : Product.objects.all(),
+        'customer' : Customer.objects.get(customer_no=no),
+    }
+    print(Customer.objects.filter(customer_no=no))
+    return HttpResponse(template.render(context, request))
+
 @csrf_exempt
 def searchCameraLog(request, camera_no):
     now = timezone.localtime()

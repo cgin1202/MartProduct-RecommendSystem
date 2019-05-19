@@ -1,0 +1,193 @@
+{% load static %}
+<!-- dash/customer.html -->
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Westdoor456 | Dashboard</title>
+  <style type="text/css">
+/* 13. Basic Styling with CSS */
+
+/* Style the lines by removing the fill and applying a stroke */
+.line {
+    fill: none;
+    stroke: #ffab00;
+    stroke-width: 3;
+}
+  
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+/* Style the dots by assigning a fill and stroke */
+.dot {
+    fill: #ffab00;
+    stroke: #fff;
+}
+  
+  .focus circle {
+  fill: none;
+  stroke: steelblue;
+}
+
+</style>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/font-awesome/css/font-awesome.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/Ionicons/css/ionicons.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dashboard/dist/css/AdminLTE.min.css' %}">
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="{% static 'dashboard/dist/css/skins/_all-skins.min.css' %}">
+  <!-- Morris chart -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/morris.js/morris.css' %}">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/jvectormap/jquery-jvectormap.css' %}">
+  <!-- Date Picker -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="{% static 'dashboard/bower_components/bootstrap-daterangepicker/daterangepicker.css' %}">
+  <!-- bootstrap wysihtml5 - text editor -->
+  <link rel="stylesheet" href="{% static 'dashboard/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css' %}">
+  <script src="{% static 'dashboard/bower_components/d3/d3.min.js' %}"></script>
+  <script src="{% static 'dashboard/bower_components/d3/d3-legend.min.js' %}"></script>
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic" > 
+</head>
+
+
+<body class="hold-transition skin-black sidebar-mini">
+  <div class="wrapper">
+    {% include 'header.html' %}
+    {% include 'main-sidebar.html' %}
+    <!-- 데이터 테이블 본문 -->
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Customer's statistics
+          <small>advanced tables</small>
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+          <li><a href="#">Cuctomers</a></li>
+          <li class="active">Individual</li>
+        </ol>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- 고객 정보 -->
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="box box-default">
+              <div class="box-header">
+                <h3 class="box-title">Cutomer</h3>
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body">
+                <table class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Mart</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td>{{ customer.customer_no }}</td>
+                    <td>{{ customer.customer_name }}</td>
+                    <td>{{ customer.customer_gender }}</td>
+                    <td>{{ customer.customer_age }}</td>
+                    <td>{{ customer.customer_market_in }}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row 고객 정보 -->
+
+        <!-- 고객 line chart -->
+        <div class="row">
+          <div class="col-xs-12">
+            <!-- LINE CHART -->
+            <div class="box box-default">
+              <div class="box-header with-border">
+                <h3 class="box-title">Line Chart</h3>
+
+                <div class="box-tools pull-right">
+                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                </div>
+              </div>
+              <div class="box-body">
+                <div class="chart">
+                  <svg width="100%" height="400" font-family="sans-serif" font-size="10" text-anchor="middle"></svg>
+                </div>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.고객 line chart -->
+      </section>
+      <!-- /.content -->
+    </div>
+    {% include 'footer.html' %}
+</div>
+<!-- ./wrapper -->
+
+
+<script src="{% static 'dashboard/dist/js/customer.js' %}"></script>
+<!-- jQuery 3 -->
+<script src="{% static 'dashboard/bower_components/jquery/dist/jquery.min.js' %}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{% static 'dashboard/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<!-- DataTables -->
+<script src="{% static 'dashboard/bower_components/datatables.net/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'dashboard/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js' %}"></script>
+<!-- SlimScroll -->
+<script src="{% static 'dashboard/bower_components/jquery-slimscroll/jquery.slimscroll.min.js' %}"></script>
+<!-- FastClick -->
+<script src="{% static 'dashboard/bower_components/fastclick/lib/fastclick.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'dashboard/dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'dashboard/dist/js/demo.js' %}"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : false,
+      'autoWidth'   : false
+    })
+  })
+</script>
+</body>
+</html>
