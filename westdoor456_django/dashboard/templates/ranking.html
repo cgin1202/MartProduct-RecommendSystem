@@ -89,46 +89,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>손흥민 샴푸</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>콩스타일</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>TS 샴푸</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>소녀시대</td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>동방신기</td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>원더걸스</td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td>빅뱅</td>
-                  </tr>
-                  <tr>
-                    <td>8</td>
-                    <td>샤이니</td>
-                  </tr>
-                  <tr>
-                    <td>9</td>
-                    <td>카라</td>
-                  </tr>
-                  <tr>
-                    <td>10</td>
-                    <td>음악중심</td>
-                  </tr>
+                {% for naver in crawlings.naver%}
+                {% if naver.key <= 10 %}
+                <tr>
+                  <td>{{ naver.key }}</td>
+                  <td>{{ naver.value }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
                 </tbody>
               </table>
             </div> <!-- /. box-body -->
@@ -151,46 +119,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>손흥민 샴푸</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>콩스타일</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>TS 샴푸</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>소녀시대</td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>동방신기</td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>원더걸스</td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td>빅뱅</td>
-                  </tr>
-                  <tr>
-                    <td>8</td>
-                    <td>샤이니</td>
-                  </tr>
-                  <tr>
-                    <td>9</td>
-                    <td>카라</td>
-                  </tr>
-                  <tr>
-                    <td>10</td>
-                    <td>음악중심</td>
-                  </tr>
+                {% for daum in crawlings.daum %}
+                {% if daum.key <= 10 %}
+                <tr>
+                  <td>{{ daum.key }}</td>
+                  <td>{{ daum.value }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
                 </tbody>
               </table>
             </div> <!-- /. box-body -->
@@ -202,7 +138,7 @@
         <div class="col-xs-4">
           <div class="box box-warning">
             <div class="box-header with-border">
-              <h3 class="box-title">구글 트랜드</h3>
+              <h3 class="box-title">네이트</h3>
             </div> <!-- /. box-header -->
             <div class="box-body">
               <table class="table table-condensed">
@@ -213,46 +149,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>손흥민 샴푸</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>콩스타일</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>TS 샴푸</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>소녀시대</td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>동방신기</td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>원더걸스</td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td>빅뱅</td>
-                  </tr>
-                  <tr>
-                    <td>8</td>
-                    <td>샤이니</td>
-                  </tr>
-                  <tr>
-                    <td>9</td>
-                    <td>카라</td>
-                  </tr>
-                  <tr>
-                    <td>10</td>
-                    <td>음악중심</td>
-                  </tr>
+                {% for nate in crawlings.nate %}
+                {% if nate.key <= 10 %}
+                <tr>
+                  <td>{{ nate.key }}</td>
+                  <td>{{ nate.value }}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
                 </tbody>
               </table>
             </div> <!-- /. box-body -->
@@ -281,13 +185,13 @@
                 </tr>
                 </thead>
                 <tbody>
-            {% for realtime in realtimes%}
+                <!-- {% for realtime in realtimes%}
                 <tr>
-              <td>{{ forloop.counter }}</td>
-                  <td>{{ realtime.productname}}</td>
-                  <td>{{ realtime.value__sum}}</td>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ realtime.realtime_product}}</td>
+                  <td>{{ realtime.realtime_value__sum}}</td>
                 </tr>
-            {% endfor %}
+                {% endfor %} -->
                 </tbody>
               </table>
             </div>

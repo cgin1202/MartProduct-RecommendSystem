@@ -69,13 +69,13 @@ class CameraLog(models.Model):
     datetime_now = models.DateTimeField(auto_now = True)
 
 class Realtime(models.Model):
-    realtime_no= models.IntegerField(primary_key=True)
-    productname = models.CharField(max_length=128)
-    titlename = models.CharField(max_length=128)
-    portalsite = models.CharField(max_length=128)
-    ranking = models.IntegerField(default=10)
-    date=models.DateTimeField(default=timezone.now)
-    value = models.IntegerField(default=0)
+    #realtime_no= models.IntegerField(primary_key=True)
+    realtime_product = models.CharField(max_length=128)
+    realtime_category = models.CharField(max_length=128)
+    realtime_site = models.CharField(max_length=128)
+    realtime_ranking = models.IntegerField(default=10)
+    realtime_date=models.DateTimeField(default=timezone.now)
+    realtime_value = models.IntegerField(default=0)
    
     def __str__(self):
-        return self.realtime_no
+        return self.realtime_product

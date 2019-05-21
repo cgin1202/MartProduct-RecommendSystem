@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from datetime import datetime, timedelta
-from myapps import pymongodb
+from myapps import pymongodb, crawlings
 from dashboard.models import CameraLog, Camera, Customer, Product, Realtime
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -47,23 +47,25 @@ def customer_one(request, no):
         'products' : Product.objects.all(),
         'customer' : Customer.objects.get(customer_no=no),
     }
-    print(Customer.objects.filter(customer_no=no))
     return HttpResponse(template.render(context, request))
 
 def ranking(request):
+    crawling_datas = crawlings.crawlings()
+    template = loader.get_template('ranking.html')
+    now=timezone.localtime()
+    standard=now-timedelta(days=7)
+    #realtimes=Realtime.objects.filter(realtime_date__gte=standard).annotate(Sum('realtime_value')).order_by('-value__sum')[:10]
+    #print(realtimes)
 
-   template = loader.get_template('ranking.html')
-   now=timezone.localtime()
-   standard=now-timedelta(days=7)
-   realtimes=Realtime.objects.values('productname').filter(date__gte=standard).annotate(Sum('value')).order_by('-value__sum')[:10]
-   
-   context = {
+    context = {
         'cameras' : Camera.objects.all(),
+        'customers' : Customer.objects.all(),
         'products' : Product.objects.all(),
-        'realtimes':realtimes,
+        #'realtimes' : realtimes,
+        'crawlings' : crawling_datas
     }
    
-   return HttpResponse(template.render(context, request))
+    return HttpResponse(template.render(context, request))
 
 
 @csrf_exempt
