@@ -1,6 +1,7 @@
 #from django.db import models
 from djongo import models
 #from django import forms
+from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -66,3 +67,15 @@ class CameraLog(models.Model):
     camera = models.ForeignKey(Camera, on_delete = models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete = models.CASCADE)
     datetime_now = models.DateTimeField(auto_now = True)
+
+class Realtime(models.Model):
+    realtime_no= models.IntegerField(primary_key=True)
+    productname = models.CharField(max_length=128)
+    titlename = models.CharField(max_length=128)
+    portalsite = models.CharField(max_length=128)
+    ranking = models.IntegerField(default=10)
+    date=models.DateTimeField(default=timezone.now)
+    value = models.IntegerField(default=0)
+   
+    def __str__(self):
+        return self.realtime_no

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from datetime import datetime, timedelta
 from myapps import pymongodb
-from dashboard.models import CameraLog, Camera, Customer, Product
+from dashboard.models import CameraLog, Camera, Customer, Product, Realtime
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
@@ -81,3 +81,16 @@ def searchCameraLog(request, camera_no):
 
     #     context = {'camera_log' : camera_log,'customer_log' : customer_log, 'customer_ratings' : customer_ratings}
     return HttpResponse(json.dumps(context), "application/json")
+
+def ranking(request):
+   template = loader.get_template('ranking.html')
+   time=datetime.now()
+   #time=time+timedelta(day=-7)
+   context = {
+        'cameras' : Camera.objects.all(),
+        'customers' : Customer.objects.all(),
+        'products' : Product.objects.all(),
+        'realtimes': Realtime.objects.all(),
+    }
+   
+   return HttpResponse(template.render(context, request))
