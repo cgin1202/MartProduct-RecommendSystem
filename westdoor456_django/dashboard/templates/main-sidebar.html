@@ -38,21 +38,10 @@
             <i class="fa fa-television"></i> <span>Billboard</span>
             </a>
         </li>
-        <li class="treeview">
-            <a href="#">
-            <i class="fa fa-user-o"></i> <span>Customer</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-            </span>
+        <li>
+            <a href="{% url 'customer' %}">
+            <i class="fa fa-television"></i> <span>Customer</span>
             </a>
-            <ul class="treeview-menu">
-                <li><a href="{% url 'customer' %}"><i class="fa fa-circle-o"></i>All Customer</a></li>
-                {% for customer in customers %}
-                {% if customer.customer_no is not -1 %}
-                <li><a href="{% url 'customer_one' customer.customer_no %}"><i class="fa fa-circle-o"></i>{{ customer.customer_name }}</a></li>
-                {% endif %}
-                {% endfor %}
-            </ul>
         </li>
         <li>
             <a href="{% url 'ranking' %}">

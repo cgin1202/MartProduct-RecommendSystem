@@ -8,6 +8,8 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 import json
+from django.db.models import Sum
+
 
 # Create your views here.
 def index(request):
@@ -25,7 +27,6 @@ def camera(request, no):
     template = loader.get_template('camera.html')
     context = {
         'cameras' : Camera.objects.all(),
-        'customers' : Customer.objects.all(),
         'products' : Product.objects.all(),
         'no' : no,
     }
@@ -34,20 +35,36 @@ def camera(request, no):
 def customer(request):
     template = loader.get_template('AllCustomer.html')
     context = {
+        'cameras' : Camera.objects.all(),
         'customers' : Customer.objects.all(),
-    }
+        'products' : Product.objects.all(),    }
     return HttpResponse(template.render(context, request))
 
 def customer_one(request, no):
     template = loader.get_template('Customer.html')
     context = {
         'cameras' : Camera.objects.all(),
-        'customers' : Customer.objects.all(),
         'products' : Product.objects.all(),
         'customer' : Customer.objects.get(customer_no=no),
     }
     print(Customer.objects.filter(customer_no=no))
     return HttpResponse(template.render(context, request))
+
+def ranking(request):
+
+   template = loader.get_template('ranking.html')
+   now=timezone.localtime()
+   standard=now-timedelta(days=7)
+   realtimes=Realtime.objects.values('productname').filter(date__gte=standard).annotate(Sum('value')).order_by('-value__sum')[:10]
+   
+   context = {
+        'cameras' : Camera.objects.all(),
+        'products' : Product.objects.all(),
+        'realtimes':realtimes,
+    }
+   
+   return HttpResponse(template.render(context, request))
+
 
 @csrf_exempt
 def searchCameraLog(request, camera_no):
@@ -82,15 +99,20 @@ def searchCameraLog(request, camera_no):
     #     context = {'camera_log' : camera_log,'customer_log' : customer_log, 'customer_ratings' : customer_ratings}
     return HttpResponse(json.dumps(context), "application/json")
 
-def ranking(request):
-   template = loader.get_template('ranking.html')
-   time=datetime.now()
-   #time=time+timedelta(day=-7)
-   context = {
-        'cameras' : Camera.objects.all(),
-        'customers' : Customer.objects.all(),
-        'products' : Product.objects.all(),
-        'realtimes': Realtime.objects.all(),
-    }
-   
-   return HttpResponse(template.render(context, request))
+
+@csrf_exempt
+def searchRatingLog(request, customer_no):
+    context = []
+    customer = Customer.objects.get(customer_no=customer_no)
+    context.append([0, customer.customer_ratings.rating0])
+    context.append([1, customer.customer_ratings.rating1])
+    context.append([2, customer.customer_ratings.rating2])
+    context.append([3, customer.customer_ratings.rating3])
+    context.append([4, customer.customer_ratings.rating4])
+    context.append([5, customer.customer_ratings.rating5])
+    context.append([6, customer.customer_ratings.rating6])
+    context.append([7, customer.customer_ratings.rating7])
+    context.append([8, customer.customer_ratings.rating8])
+    context.append([9, customer.customer_ratings.rating9])
+    return HttpResponse(json.dumps(context), "application/json")
+

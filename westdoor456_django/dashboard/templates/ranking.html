@@ -275,18 +275,17 @@
               <table class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                  <th>Ranking</th>
                   <th>Product Name</th>
-                  <th>Portal Site</th>
-                  <th>Value</th>
+                  <th>Total Value</th>
                 </tr>
                 </thead>
                 <tbody>
             {% for realtime in realtimes%}
                 <tr>
+              <td>{{ forloop.counter }}</td>
                   <td>{{ realtime.productname}}</td>
-                  <td>{{ realtime.titlename}}</td>
-                  <td>{{ realtime.portalsite}}</td>
-                  <td>{{ realtime.value}}</td>
+                  <td>{{ realtime.value__sum}}</td>
                 </tr>
             {% endfor %}
                 </tbody>
