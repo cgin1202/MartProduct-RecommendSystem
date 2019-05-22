@@ -13,3 +13,5 @@ def crawlings():
     datas["daum"] = daum_crawling(time, mydb)
     datas["nate"] = nate_crawling(time, mydb)
     return datas
+
+crawlings()

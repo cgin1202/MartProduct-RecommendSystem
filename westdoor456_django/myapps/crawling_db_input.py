@@ -1,12 +1,10 @@
 # -*- coding:utf-8 -*-
 from myapps.find_product import find_product
-def crawling_db_input(time, mydb, title_lists, site):
-    max_idx = len(title_lists)
-    lists = []
-    for idx, title in enumerate(title_lists, 1):
-        lists.append({'key':idx, 'value':title.text})
-        calc=find_product(mydb.dashboard_product, str(title.text))
+def crawling_db_input(time, mydb, title_list, site):
+    max_idx = len(title_list)
+    for title in title_list:
+        #print(title)
+        calc = find_product(mydb.dashboard_product, title['value'])
         if(calc!='false'):
-            doc = {'realtime_product':calc,'realtime_category': str(title.text), 'realtime_site': site, 'realtime_ranking': idx, 'realtime_date': time, 'realtime_value':(max_idx-idx+1)/max_idx}
+            doc = {'realtime_product':calc,'realtime_category': title['value'], 'realtime_site': site, 'realtime_ranking': title['key'], 'realtime_date': time, 'realtime_value':(max_idx-title['key']+1)/max_idx*10}
             mydb.dashboard_realtime.insert(doc)
-    return lists

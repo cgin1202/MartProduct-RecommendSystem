@@ -75,7 +75,7 @@ class Realtime(models.Model):
     realtime_site = models.CharField(max_length=128)
     realtime_ranking = models.IntegerField(default=10)
     realtime_date=models.DateTimeField(default=timezone.now)
-    realtime_value = models.IntegerField(default=0)
+    realtime_value = models.FloatField(default=0)
    
     def __str__(self):
         return self.realtime_product
