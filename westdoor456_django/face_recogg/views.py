@@ -5,6 +5,8 @@ from myapps import pymongodb
 import time
 from dashboard.models import CameraLog
 from dashboard.models import Camera
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # Create your views here.
 def gen(fr, dbon):
@@ -33,4 +35,22 @@ def cam(request,no):
 def camdb(request, no):
     return StreamingHttpResponse(gen(face_recog.FaceRecog(no), True),content_type="multipart/x-mixed-replace;boundary=frame")
 
-#def check(request, no):    
+
+def gen_register(fr, dbon):
+    mydb = pymongodb.dbconnection()
+    
+    if(Camera.objects.get(camera_no=fr.camera_no).product):
+        fr.product_no = Camera.objects.get(camera_no=fr.camera_no).product.product_no
+    else:
+        fr.product_no = -1
+    mycol = mydb["dashboard_customer"]
+    camera_log = mydb["camera_log"]
+    nowtime = time.time()
+    while True:
+        jpg_bytes = fr.reg_jpg_bytes()
+        
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + jpg_bytes + b'\r\n\r\n')
+
+def cam_register(request):
+    return StreamingHttpResponse(gen_register(face_recog.FaceRecog(0), False),content_type="multipart/x-mixed-replace;boundary=frame")

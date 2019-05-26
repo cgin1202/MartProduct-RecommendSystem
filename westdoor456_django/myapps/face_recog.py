@@ -110,6 +110,12 @@ class FaceRecog():
         # video stream.
         ret, jpg = cv2.imencode('.jpg', frame)
         return jpg.tobytes()
+    
+    #얼굴식별 없이 jpg형태로 가져오기
+    def reg_jpg_bytes(self):
+        frame = self.camera.get_frame()
+        ret, jpg = cv2.imencode('.jpg', frame)
+        return jpg.tobytes()
 
 
 if __name__ == '__main__':

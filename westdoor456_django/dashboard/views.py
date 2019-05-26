@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from datetime import datetime, timedelta
-from myapps import pymongodb, crawlings
+from time import sleep
+from myapps import pymongodb, crawlings, face_catching
 from dashboard.models import CameraLog, Camera, Customer, Product, Realtime
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -41,13 +42,30 @@ def customer(request):
     return HttpResponse(template.render(context, request))
 
 def customer_one(request, no):
-    template = loader.get_template('Customer.html')
+    template = loader.get_template('customer.html')
     context = {
         'cameras' : Camera.objects.all(),
         'products' : Product.objects.all(),
         'customer' : Customer.objects.get(customer_no=no),
     }
     return HttpResponse(template.render(context, request))
+
+def register(request):
+    template = loader.get_template('register.html')
+    context = {
+        'cameras' : Camera.objects.all(),
+    }
+    return HttpResponse(template.render(context, request))
+
+def billboard(request):
+    template = loader.get_template('billboard.html')
+    context = {
+        'cameras' : Camera.objects.all(),
+        'no' : 0,
+    }
+    return HttpResponse(template.render(context, request))
+
+
 
 def ranking(request):
     crawling_datas = crawlings.crawlings()
@@ -131,3 +149,10 @@ def searchRatingLog(request, customer_no):
     context.append([8, customer.customer_ratings.rating8])
     context.append([9, customer.customer_ratings.rating9])
     return HttpResponse(json.dumps(context), "application/json")
+
+
+@csrf_exempt
+def face_catch(request):
+    face_catching.face_catching()
+
+    
