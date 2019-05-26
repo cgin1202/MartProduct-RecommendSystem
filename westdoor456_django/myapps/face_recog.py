@@ -41,7 +41,7 @@ class FaceRecog():
     def __del__(self):
         del self.camera
 
-    def get_frame(self, mycol):
+    def get_frame(self, mycol, dbon):
         frame = self.camera.get_frame()
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         rgb_small_frame = small_frame[:, :, ::-1]
@@ -75,14 +75,15 @@ class FaceRecog():
         self.process_this_frame = not self.process_this_frame
 
         #디비 연동
-        for id in self.face_names:
-            if id=="Unknown":
-                continue
-            self.now_no = int(id)
-            if time.time() - self.nowtime >=1:
-                self.nowtime = time.time()
-                if self.product_no != -1:
-                    mycol.update({'customer_no':int(id)}, {'$inc':{'customer_ratings.rating%d'%self.product_no:1}})
+        if(dbon):
+            for id in self.face_names:
+                if id=="Unknown":
+                    continue
+                self.now_no = int(id)
+                if time.time() - self.nowtime >=1:
+                    self.nowtime = time.time()
+                    if self.product_no != -1:
+                        mycol.update({'customer_no':int(id)}, {'$inc':{'customer_ratings.rating%d'%self.product_no:1}})
 
 
         for (top, right, bottom, left), name in zip(self.face_locations, self.face_names):
@@ -102,8 +103,8 @@ class FaceRecog():
 
         return frame
 
-    def get_jpg_bytes(self, mycol):
-        frame = self.get_frame(mycol)
+    def get_jpg_bytes(self, mycol, dbon):
+        frame = self.get_frame(mycol, dbon)
         # We are using Motion JPEG, but OpenCV defaults to capture raw images,
         # so we must encode it into JPEG in order to correctly display the
         # video stream.

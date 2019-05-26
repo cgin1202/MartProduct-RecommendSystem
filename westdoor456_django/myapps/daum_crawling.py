@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
-from myapps.crawling_db_input import crawling_db_input
 
 def daum_crawling(time, mydb):
     html = requests.get('http://www.daum.net/').text
