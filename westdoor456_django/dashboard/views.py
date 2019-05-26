@@ -54,22 +54,23 @@ def ranking(request):
     template = loader.get_template('ranking.html')
     now=timezone.localtime()
     standard=now-timedelta(days=7)
-    pipeline = [
-        {"$match" : {"realtime_date" : {"$gte":standard}}},
-        {"$group": {"_id": "$realtime_product", "realtime_values": {"$sum" : "$realtime_value"}}},
-        {"$sort":{"realtime_values":-1}},
-    ]
-    mydb = pymongodb.dbconnection()
-    mycol = mydb.dashboard_realtime
-    realtime_db = mycol.aggregate(pipeline)
-    realtimes = []
-    for realtime in realtime_db:
-        print(realtime)
-        data = {}
-        data['realtime_product'] = realtime['_id']
-        data['realtime_values'] = realtime['realtime_values']
-        realtimes.append(data)
-    
+    # pipeline = [
+    #     {"$match" : {"realtime_date" : {"$gte":standard}}},
+    #     {"$group": {"_id": "$realtime_product", "realtime_values": {"$sum" : "$realtime_value"}}},
+    #     {"$sort":{"realtime_values":-1}},
+    # ]
+    # mydb = pymongodb.dbconnection()
+    # mycol = mydb.dashboard_realtime
+    # realtime_db = mycol.aggregate(pipeline)
+    # realtimes = []
+    # for realtime in realtime_db:
+    #     print(realtime)
+    #     data = {}
+    #     data['realtime_product'] = realtime['_id']
+    #     data['realtime_values'] = realtime['realtime_values']
+    #     realtimes.append(data)
+    realtimes=Realtime.objects.values('realtime_product').filter(realtime_date__gte=standard).annotate(Sum('realtime_value')).order_by('-realtime_value__sum')[:10]
+
     context = {
         'cameras' : Camera.objects.all(),
         'customers' : Customer.objects.all(),
