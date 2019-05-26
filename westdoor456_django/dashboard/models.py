@@ -69,7 +69,7 @@ class CameraLog(models.Model):
     datetime_now = models.DateTimeField(auto_now = True)
 
 class Realtime(models.Model):
-    #realtime_no= models.IntegerField(primary_key=True)
+    realtime_no= models.IntegerField(primary_key=True)
     realtime_product = models.CharField(max_length=128)
     realtime_category = models.CharField(max_length=128)
     realtime_site = models.CharField(max_length=128)
