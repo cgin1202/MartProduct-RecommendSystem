@@ -131,4 +131,3 @@ def searchRatingLog(request, customer_no):
     context.append([8, customer.customer_ratings.rating8])
     context.append([9, customer.customer_ratings.rating9])
     return HttpResponse(json.dumps(context), "application/json")
-

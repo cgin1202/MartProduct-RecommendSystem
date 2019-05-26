@@ -96,37 +96,36 @@
 
   <!-- AJAX script-->
   <script>
-      setInterval(function(){
-          $.ajax({
-              url:'{% url "searchCameraLog" no %}',
-              dataType:'json',
-              type:'POST',
-              data:{'msg':"pushed"},
-              success:function(result){
-                var articles = ""
-                for(var i=0; i<result.length; i++){
-                  articles += `<div class="box-body box-profile">
-                    <h3 class="profile-username text-center">${result[i].customer_name}</h3>
-                    <p class="text-muted text-center">${result[i].customer_no}</p>
-                    <ul class="list-group list-group-unbordered">
-                      <li class="list-group-item">
-                        <b>GENDER</b> <a class="pull-right">${result[i].customer_gender}</a>
-                      </li>
-                      <li class="list-group-item">
-                        <b>AGE</b> <a class="pull-right">${result[i].customer_age}</a>
-                      </li>
-                      <li class="list-group-item">
-                        <b>MART</b> <a class="pull-right">${result[i].customer_market_in}</a>
-                      </li>
-                    </ul>
-                  </div>`
-                }
-                document.getElementById("profiles").innerHTML = articles;
-                //document.querySelector('article').innerHTML = JSON.stringify(result);
-              }
-
-          });
-      },1000)
+  setInterval(function(){
+    $.ajax({
+      url:'{% url "searchCameraLog" no %}',
+      dataType:'json',
+      type:'POST',
+      data:{'msg':"pushed"},
+      success:function(result){
+        var articles = ""
+        for(var i=0; i<result.length; i++){
+          articles += `<div class="box-body box-profile">
+            <h3 class="profile-username text-center">${result[i].customer_name}</h3>
+            <p class="text-muted text-center">${result[i].customer_no}</p>
+            <ul class="list-group list-group-unbordered">
+              <li class="list-group-item">
+                <b>GENDER</b> <a class="pull-right">${result[i].customer_gender}</a>
+              </li>
+              <li class="list-group-item">
+                <b>AGE</b> <a class="pull-right">${result[i].customer_age}</a>
+              </li>
+              <li class="list-group-item">
+                <b>MART</b> <a class="pull-right">${result[i].customer_market_in}</a>
+              </li>
+            </ul>
+          </div>`
+        }
+        document.getElementById("profiles").innerHTML = articles;
+        //document.querySelector('article').innerHTML = JSON.stringify(result);
+      }
+    });
+  },1000)
   </script>
 
 <!-- jQuery 3 -->

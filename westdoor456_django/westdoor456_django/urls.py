@@ -19,5 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('face_recogg/', include('face_recogg.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('backgrounds/', include('backgrounds.urls')),
     path('admin/', admin.site.urls),
 ]

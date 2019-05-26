@@ -12,6 +12,5 @@ def daum_crawling(time, mydb):
     for link in links:
         index += 1
         title_list.append({'key':index, 'value':link.text})
-    crawling_db_input(time, mydb, title_list, "daum")
     return title_list
      
