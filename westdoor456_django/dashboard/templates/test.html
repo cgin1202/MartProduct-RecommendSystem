@@ -1,0 +1,33 @@
+<script>
+    function drawTableNaver(){
+      $.ajax({
+         url:'{% url "showNaverCrawlingLog" %}',
+         dataType:'json',
+         type:'POST',
+         data:{'msg':"pushed"},
+         success:function(result){
+             
+             var HTML = `
+             <table class="table table-condensed">
+                <thead>
+                  <tr>
+                    <th style="width: 10px">#</th>
+                    <th>검색어</th>
+                  </tr>
+                </thead>
+                <tbody>
+            `for(var i=0;i<10;i++){
+                HTML += `
+                <tr>
+                  <td>${result[i][0]}</td>
+                  <td>${result[i][1]}</td>
+                </tr>
+                `;
+            }
+            HTML += `</tr></tbody></table>`;
+            document.getElementById("naverCrawling").innerHTML=HTML;
+            //document.getElementById("naver_id").className='table table-condensed';
+         }
+      });
+     }
+</script>

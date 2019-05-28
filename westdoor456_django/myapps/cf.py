@@ -1,4 +1,4 @@
-from pymongodb import dbconnection
+# from pymongodb import dbconnection
 import math
 import operator
 
@@ -54,8 +54,8 @@ def get_rating(data_table, most_sim_users, reco_user, num_items, i):
 
 
 def getcfratings(data_table, reco_user, num_items):
-    num_sim_user_topk = 2
-    num_item_rec_topk = 3
+    num_sim_user_topk = 3
+    num_item_rec_topk = 5
     sim_users={}
     for key, value in data_table.items():
         if(key is reco_user):
@@ -64,6 +64,7 @@ def getcfratings(data_table, reco_user, num_items):
         if(pearson_value is 0):
             continue
         sim_users[key] = pearson_value
+
     sim_users = sorted(sim_users.items(), key=lambda x:x[1], reverse=True)
 
     most_sim_users = []
@@ -76,18 +77,12 @@ def getcfratings(data_table, reco_user, num_items):
             continue
         ratings.append((i, get_rating(data_table, most_sim_users, reco_user, num_items, i)))
     ratings = sorted(ratings, key=lambda x:x[1], reverse=True)
-    print(ratings)
 
+    most_ratings = []
+    for i in range(num_item_rec_topk):
+        most_ratings.append(ratings[i])
+    result = {}
+    result['sim_users'] = sim_users
+    result['ratings'] = most_ratings
+    return result
 
-mydb = dbconnection()
-mycol = mydb["dashboard_customer"]
-user_ratings = mycol.find({'customer_no':{'$gte':0}}, {'_id':0, 'customer_no':1, 'customer_ratings':1})
-data_table = {}
-for rating in user_ratings:
-    data = {}
-    for key, value in rating['customer_ratings'].items():
-        data[int(key[6:])] = value
-    data_table[int(rating['customer_no'])] = data
-
-print(data_table)
-getcfratings(data_table, 8, 10)

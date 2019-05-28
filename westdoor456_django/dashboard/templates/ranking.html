@@ -88,15 +88,7 @@
                     <th>검색어</th>
                   </tr>
                 </thead>
-                <tbody>
-                {% for naver in crawlings.naver%}
-                {% if naver.key <= 10 %}
-                <tr>
-                  <td>{{ naver.key }}</td>
-                  <td>{{ naver.value }}</td>
-                </tr>
-                {% endif %}
-                {% endfor %}
+                <tbody id="naver_crawling">
                 </tbody>
               </table>
             </div> <!-- /. box-body -->
@@ -118,15 +110,7 @@
                     <th>검색어</th>
                   </tr>
                 </thead>
-                <tbody>
-                {% for daum in crawlings.daum %}
-                {% if daum.key <= 10 %}
-                <tr>
-                  <td>{{ daum.key }}</td>
-                  <td>{{ daum.value }}</td>
-                </tr>
-                {% endif %}
-                {% endfor %}
+                <tbody id="daum_crawling">
                 </tbody>
               </table>
             </div> <!-- /. box-body -->
@@ -148,15 +132,7 @@
                     <th>검색어</th>
                   </tr>
                 </thead>
-                <tbody>
-                {% for nate in crawlings.nate %}
-                {% if nate.key <= 10 %}
-                <tr>
-                  <td>{{ nate.key }}</td>
-                  <td>{{ nate.value }}</td>
-                </tr>
-                {% endif %}
-                {% endfor %}
+                <tbody id="nate_crawling">
                 </tbody>
               </table>
             </div> <!-- /. box-body -->
@@ -184,14 +160,7 @@
                   <th>Total Value</th>
                 </tr>
                 </thead>
-                <tbody>
-                {% for realtime in realtimes%}
-                <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{ realtime.realtime_product}}</td>
-                  <td>{{ realtime.realtime_value__sum}}</td>
-                </tr>
-                {% endfor %}
+                <tbody id="realtime_table">
                 </tbody>
               </table>
             </div>
@@ -233,6 +202,97 @@
 <script src="{% static 'dashboard/dist/js/demo.js' %}"></script>
 <!-- page script -->
 <script>
+  function drawTableNaver(){
+    $.ajax({
+      url:'{% url "showCrawlingdataLog" %}',
+      dataType:'json',
+      type:'POST',
+      data:{'msg':"pushed"},
+      success:function(result){
+        var article='';
+        for(var i=0;i<10;i++){
+          article += `
+          <tr>
+            <td>${result[i][0]}</td>
+            <td>${result[i][1]}</td>            
+          </tr>
+          `
+        }
+        document.getElementById("naver_crawling").innerHTML=article;
+      }
+    });
+  }
+  function drawTableDaum(){
+    $.ajax({
+      url:'{% url "showCrawlingdataLog" %}',
+      dataType:'json',
+      type:'POST',
+      data:{'msg':"pushed"},
+      success:function(result){
+        var article='';
+        for(var i=10;i<20;i++){
+          article += `
+          <tr>
+            <td>${result[i][0]}</td>
+            <td>${result[i][1]}</td>            
+          </tr>
+          `
+        }
+        document.getElementById("daum_crawling").innerHTML=article;
+      }
+    });
+  }
+  function drawTableNate(){
+    $.ajax({
+      url:'{% url "showCrawlingdataLog" %}',
+      dataType:'json',
+      type:'POST',
+      data:{'msg':"pushed"},
+      success:function(result){
+        var article='';
+        for(var i=20;i<30;i++){
+          article += `
+          <tr>
+            <td>${result[i][0]}</td>
+            <td>${result[i][1]}</td>            
+          </tr>
+          `
+        }
+        document.getElementById("nate_crawling").innerHTML=article;
+      }
+    });
+  }
+  function drawTableRealtimeproduct(){
+    $.ajax({
+      url:'{% url "showCrawlingdataLog" %}',
+      dataType:'json',
+      type:'POST',
+      data:{'msg':"pushed"},
+      success:function(result){
+        var article='';
+        for(var i=30;i<result.length;i++){
+          article+=`
+          <tr>
+            <td>${i-30+1}</td>
+            <td>${result[i][0]}</td>
+            <td>${result[i][1]}</td>
+          </tr>
+          `
+        }
+        document.getElementById("realtime_table").innerHTML=article;
+      }
+    });
+  }
+
+  function executeFunction(){
+    drawTableNaver();
+    drawTableDaum();
+    drawTableNate();
+    drawTableRealtimeproduct();
+  }
+  executeFunction();
+  setInterval(executeFunction(), 1000);
+
   $(function () {
     $('#example1').DataTable()
     $('#example2').DataTable({

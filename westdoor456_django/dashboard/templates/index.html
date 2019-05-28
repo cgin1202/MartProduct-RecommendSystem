@@ -213,35 +213,39 @@
 <!--<script src="dist/js/pages/dashboard.js"></script> -->
 <!-- AdminLTE for demo purposes -->
 <script src="{% static 'dashboard/dist/js/main.js' %}"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <!--Load the AJAX API-->
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
   google.charts.load('current', {'packages':['corechart']});
   google.charts.setOnLoadCallback(drawChart);
 
-  function drawChart() {
-   var result=[];
-  {% for realtime in realtimes %}
-  var a=[];
-  var temp1="{{realtime.realtime_product}}";
-  var temp2={{realtime.realtime_value__sum}};
-  a.push(temp1);
-  a.push(temp2);
-  result.push(a);
-  {% endfor %}
+  function drawChart(result) {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Productname');
     data.addColumn('number', 'value');
     data.addRows(result);
 
     var options = {'title':'',
-                   'width':1000,
-                   'height':600};
+                    'width':1000,
+                    'height':600};
 
     var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
     chart.draw(data, options);
   }
+  function drawFunction(){
+    $.ajax({
+        url:'{% url "searchRealtimeLog" %}',
+        dataType:'json',
+        type:'POST',
+        data:{'msg':"pushed"},
+        success:function(result){
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(function(){drawChart(result)});
+        }
+    });
+  }
+  drawFunction();
+  setInterval(drawFunction, 1000*60);
 </script>
 </body>
 </html>

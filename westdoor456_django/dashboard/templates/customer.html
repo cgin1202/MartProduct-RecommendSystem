@@ -207,7 +207,7 @@
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(data, options);
   }
-  setInterval(function(){
+  function drawChart(){
     $.ajax({
       url:'{% url "searchRatingLog" customer.customer_no %}',
       dataType:'json',
@@ -218,7 +218,9 @@
         google.charts.setOnLoadCallback(function(){drawBasic(result)});
       }
     });
-  },1000*60)
+  }
+  drawChart();
+  setInterval(drawChart,1000*60)
   
 </script>
 </body>

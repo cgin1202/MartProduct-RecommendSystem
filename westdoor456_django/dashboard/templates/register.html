@@ -104,7 +104,7 @@
                 <div class="box-footer">
                   <div class="text-center">
                     <button type="button" class="btn btn-outline-dark" id="take-picture">사진 찍기</button>
-                    <p id="infomation" style="display:none"><br>3초 동안 카메라를 응시해주세요</p>
+                    <p id="information" style="display:none"><br>카메라 촬영을 시작합니다</p>
                   </div>
                 </div>
               </div>
@@ -115,20 +115,19 @@
         <!-- /.카메라 라이브스트림 row 끝 -->
 
         <!-- 찍은 사진 보여주기 -->
-        <div class="row">
-            <!-- row 시작-->
-            <div class="col-xs-12">
+        <!-- <div class="row" id="picture_div" style="display:none">
+            <div class="col-xs-10">
               <div class="box box-default">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Camera</h3>
+                  <h3 class="box-title">Pictures</h3>
                 </div>
-                <!-- /.box-header -->
                 <div class="box-body text-center">
-                  <img src="http://placehold.it/200x150" alt="..." class="margin">
-                  <img src="http://placehold.it/200x150" alt="..." class="margin">
-                  <img src="http://placehold.it/200x150" alt="..." class="margin">
+                  <img src="{% static '/face_recogg/face_catch/0.jpg' %}" id="picture0" alt="picture0" width="200px" height="150px" class="margin">
+                  <img src="{% static '/face_recogg/face_catch/1.jpg' %}" id="picture1" alt="picture1" width="200px" height="150px" class="margin">
+                  <img src="{% static '/face_recogg/face_catch/2.jpg' %}" id="picture2" alt="picture2" width="200px" height="150px" class="margin">
+                  <img src="{% static '/face_recogg/face_catch/3.jpg' %}" id="picture3" alt="picture3" width="200px" height="150px" class="margin">
+                  <img src="{% static '/face_recogg/face_catch/4.jpg' %}" id="picture4" alt="picture4" width="200px" height="150px" class="margin">
                 </div>
-                <!-- /.box-body 사진 고르기 -->
                 <div class="box-footer">
                   <div class="text-center">
                     <p >마음에 드는 사진을 골라주세요</p>
@@ -138,10 +137,8 @@
                   </div>
                 </div>
               </div>
-              <!-- /.box 사진 고르기 -->
             </div>
-            <!-- /.찍은 사진 보여주기 끝 -->
-        </div>
+        </div> -->
         <!-- /.찍은 사진 보여주기 row 끝 -->
       </section>
       <!-- /.content -->
@@ -171,8 +168,11 @@
 <script src="{% static 'dashboard/dist/js/demo.js' %}"></script>
 <!-- page script -->
 <script>
+  function sleep(ms){
+    ts1 = new Date().getTime() + ms;
+    do ts2 = new Date().getTime(); while (ts2<ts1);
+  }
   $(document).on('click','#take-picture',function() {
-    $('#infomation').show();
     $.ajax({
       url:'{% url "face_catch" %}',
       dataType:'json',
@@ -181,6 +181,18 @@
       success:function(result){
       }
     });
+
+    var info = document.getElementById("information");
+    info.style.display = 'block';
+    var time = 3;
+    playTimer = setInterval(function(){
+      info.innerHTML = time+"초 동안 카메라를 응시해주세요";
+      time--;
+      if(time==-1){
+        info.style.display = 'none';
+        clearInterval(playTimer);
+      }
+    }, 1000)
   });
 </script>
 </html>

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import cv2
 import face_recognition
+from time import sleep
 from myapps import cfr
 from time import sleep
 
@@ -8,7 +9,9 @@ def face_catch(camera_no):
     captured = cv2.VideoCapture(camera_no)
     for count in range(5):
         ret, frame = captured.read()
+        sleep(0.5)
         cv2.imwrite('myapps/reg_faces/'+str(count)+'.jpg', frame)
+        cv2.imwrite('dashboard/static/face_recogg/face_catch/'+str(count)+'.jpg', frame)
 
 
 def face_catching():
@@ -39,5 +42,3 @@ def face_check(count, path):
     #age_value = int(ages[0])
     age_confidence = face['age']['confidence']
     return {'no': count, 'age':age_value, 'gender':gender_value,'confidence':age_confidence+gender_confidence}
-
-face_catching()
