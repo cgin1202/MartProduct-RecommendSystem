@@ -18,7 +18,7 @@ def index(request):
 
     context = {
         'cameras' : Camera.objects.all(),
-        'customers' : Customer.objects.all(),
+        'customers' : Customer.objects.all().order_by('customer_no')[:10],
         'products' : Product.objects.all(),
         'no' : 0,
     }
@@ -154,17 +154,23 @@ def searchRealtimeLog(request):
 @csrf_exempt
 def searchRatingLog(request, customer_no):
     context = []
+    log = {}
     customer = Customer.objects.get(customer_no=customer_no)
-    context.append([0, customer.customer_ratings.rating0])
-    context.append([1, customer.customer_ratings.rating1])
-    context.append([2, customer.customer_ratings.rating2])
-    context.append([3, customer.customer_ratings.rating3])
-    context.append([4, customer.customer_ratings.rating4])
-    context.append([5, customer.customer_ratings.rating5])
-    context.append([6, customer.customer_ratings.rating6])
-    context.append([7, customer.customer_ratings.rating7])
-    context.append([8, customer.customer_ratings.rating8])
-    context.append([9, customer.customer_ratings.rating9])
+    customerlog = []
+    customerlog.append([0, customer.customer_ratings.rating0])
+    customerlog.append([1, customer.customer_ratings.rating1])
+    customerlog.append([2, customer.customer_ratings.rating2])
+    customerlog.append([3, customer.customer_ratings.rating3])
+    customerlog.append([4, customer.customer_ratings.rating4])
+    customerlog.append([5, customer.customer_ratings.rating5])
+    customerlog.append([6, customer.customer_ratings.rating6])
+    customerlog.append([7, customer.customer_ratings.rating7])
+    customerlog.append([8, customer.customer_ratings.rating8])
+    customerlog.append([9, customer.customer_ratings.rating9])
+    log['customerlog'] = customerlog
+    now = timezone.localtime()  
+    log['timelog'] = str(now)[0:19]
+    context.append(log)
     return HttpResponse(json.dumps(context), "application/json")
 
 
@@ -220,21 +226,7 @@ def searchRecommendations(request, camera_no):
 
 @csrf_exempt
 def showCrawlingdataLog(request):
-    context=[]
-    # crawling_datas = crawlings.crawlings()['naver']
-    # for naver in crawling_datas:
-    #     if naver['key'] <= 10:
-    #         context.append([naver['key'],naver['value']])
-    # crawling_datas = crawlings.crawlings()['daum']
-    # for daum in crawling_datas:
-    #     if daum['key'] <= 10:
-    #         context.append([daum['key'],daum['value']])
-    # crawling_datas = crawlings.crawlings()['nate']
-    # for nate in crawling_datas:
-    #     if nate['key'] <= 10:
-    #         context.append([nate['key'],nate['value']])
-        
-        
+    context=[]        
     crawling_datas = crawlings.crawlings()
     for naver in crawling_datas['naver']:
         if naver['key'] <= 10:
@@ -247,6 +239,7 @@ def showCrawlingdataLog(request):
             context.append([nate['key'],nate['value']])    
 
     now=timezone.localtime()
+    context.append([str(now)[0:19]])
     standard=now-timedelta(days=7)
     realtimes=Realtime.objects.values('realtime_product').filter(realtime_date__gte=standard).annotate(Sum('realtime_value')).order_by('-realtime_value__sum')[:10]
     for realtime in realtimes:

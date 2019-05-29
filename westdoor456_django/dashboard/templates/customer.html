@@ -133,7 +133,9 @@
             <!-- LINE CHART -->
             <div class="box box-default">
               <div class="box-header with-border">
-                <h3 class="box-title">Line Chart</h3>
+                <h3 class="box-title">Line Chart
+                  <small style="margin-left:15px" id="now_time"></small>
+                </h3>
 
                 <div class="box-tools pull-right">
                   <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -195,7 +197,7 @@
     var data = new google.visualization.DataTable();
     data.addColumn('number', 'X');
     data.addColumn('number', 'Customer');
-    data.addRows(result);
+    data.addRows(result[0].customerlog);
     var options = {
       hAxis: {
         title: 'Product'
@@ -215,6 +217,7 @@
       data:{'msg':"pushed"},
       success:function(result){
         google.charts.load('current', {packages: ['corechart', 'line']});
+        document.getElementById("now_time").innerHTML=result[0]['timelog'];
         google.charts.setOnLoadCallback(function(){drawBasic(result)});
       }
     });
