@@ -7,7 +7,8 @@ def crawling_db_input(time, mydb, title_list, site):
         calc = find_product(mydb.dashboard_product, title['value'])
         if(calc!='false'):
             realtime_no = getNextSequence(mydb.numberCount, 'realtime_no')
-            doc = {'realtime_no':realtime_no,'realtime_product':calc,'realtime_category': title['value'], 'realtime_site': site, 'realtime_ranking': title['key'], 'realtime_date': time, 'realtime_value':(max_idx-title['key']+1)/max_idx*10}
+            doc = {'realtime_no':realtime_no,'realtime_product':calc,'realtime_category': title['value'], 'realtime_site': site, 
+            'realtime_ranking': title['key'], 'realtime_date': time, 'realtime_value':(max_idx-title['key']+1)/max_idx*10}
             mydb.dashboard_realtime.insert(doc)
 
 def getNextSequence(collection,name):

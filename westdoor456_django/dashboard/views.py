@@ -78,7 +78,6 @@ def ranking(request):
     crawling_datas = crawlings.crawlings()
     template = loader.get_template('ranking.html')
     now=timezone.localtime()
-    standard=now-timedelta(days=7)
     # pipeline = [
     #     {"$match" : {"realtime_date" : {"$gte":standard}}},
     #     {"$group": {"_id": "$realtime_product", "realtime_values": {"$sum" : "$realtime_value"}}},
@@ -94,6 +93,7 @@ def ranking(request):
     #     data['realtime_product'] = realtime['_id']
     #     data['realtime_values'] = realtime['realtime_values']
     #     realtimes.append(data)
+    standard=now-timedelta(days=7)
     realtimes=Realtime.objects.values('realtime_product').filter(realtime_date__gte=standard).annotate(Sum('realtime_value')).order_by('-realtime_value__sum')[:10]
 
     context = {
@@ -207,18 +207,50 @@ def searchRecommendations(request, camera_no):
     
         camera_log['datetime_now'] = str(cameralog.datetime_now)
 
-        mydb = pymongodb.dbconnection()
-        mycol = mydb["dashboard_customer"]
-        user_ratings = mycol.find({'customer_no':{'$gte':0}}, {'_id':0, 'customer_no':1, 'customer_ratings':1})
-        data_table = {}
-        for rating in user_ratings:
-            data = {}
-            for key, value in rating['customer_ratings'].items():
-                data[int(key[6:])] = value
-            data_table[int(rating['customer_no'])] = data
-        recommend = cf.getcfratings(data_table, customer.customer_no, 10)
-        camera_log['sim_users'] = recommend['sim_users']
-        camera_log['ratings'] = recommend['ratings']
+        if customer.customer_no != -1:
+            mydb = pymongodb.dbconnection()
+            mycol = mydb["dashboard_customer"]
+            user_ratings = mycol.find({'customer_no':{'$gte':0}}, {'_id':0, 'customer_no':1, 'customer_ratings':1})
+            data_table = {}
+            for rating in user_ratings:
+                data = {}
+                for key, value in rating['customer_ratings'].items():
+                    data[int(key[6:])] = value
+                data_table[int(rating['customer_no'])] = data
+            recommend = cf.getcfratings(data_table, customer.customer_no, 10)
+            
+            camera_log['ratings'] = [['Product', '순위', '품목 점수', '품목종류', '선호도']]
+            recommend_point = []
+            for x in recommend['ratings']:
+                recommend_point.append(x[1])
+
+            recommend_point = normalization(recommend_point)
+
+            index = 0
+            for x in recommend['ratings']:
+                product_one = []
+                productobj = Product.objects.get(product_no=x[0])
+                product_one.append(productobj.product_name)
+                product_one.append(index+1)
+                product_one.append(int(recommend_point[index]*100))
+                product_one.append(str(productobj.product_class))
+                product_one.append(int(x[1]))
+                camera_log['ratings'].append(product_one)
+                index += 1
+            
+
+            camera_log['sim_users'] = []
+            for sim_users in recommend['sim_users']:
+                user = []
+                user.append(str(sim_users[0]))
+                user.append(sim_users[1])
+                camera_log['sim_users'].append(user)
+            #camera_log['sim_users'] = recommend['sim_users']
+            #camera_log['ratings'] = recommend['ratings']
+        else:
+            print("done")
+            camera_log['sim_users'] = -1
+            camera_log['ratings'] = -1
         context.append(camera_log)
 
     return HttpResponse(json.dumps(context), "application/json")
@@ -245,3 +277,18 @@ def showCrawlingdataLog(request):
     for realtime in realtimes:
         context.append([realtime['realtime_product'],realtime['realtime_value__sum']])
     return HttpResponse(json.dumps(context), "application/json")
+
+
+def normalization(lists):
+    max_val = 0
+    min_val = 10000000
+    for value in lists:
+        if value>max_val:
+            max_val = value
+        if value < min_val:
+            min_val = value
+    bottom = max_val - min_val
+    result = []
+    for value in lists:
+        result.append((value-min_val)/bottom)
+    return result

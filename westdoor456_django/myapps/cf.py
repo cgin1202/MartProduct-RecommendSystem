@@ -82,7 +82,7 @@ def getcfratings(data_table, reco_user, num_items):
     for i in range(num_item_rec_topk):
         most_ratings.append(ratings[i])
     result = {}
-    result['sim_users'] = sim_users
+    result['sim_users'] = most_sim_users
     result['ratings'] = most_ratings
     return result
 

@@ -62,14 +62,7 @@ class FaceRecog():
                 if True in matches:
                     first_match_index = matches.index(True)
                     name = self.known_face_names[first_match_index]
-                '''
-                distances = face_recognition.face_distance(self.known_face_encodings, face_encoding)
-                min_value = min(distances)
 
-                if min_value < 0.4:
-                    index = np.argmin(distances)
-                    name = self.known_face_names[index]
-                '''
                 self.face_names.append(name)
         
         self.process_this_frame = not self.process_this_frame
